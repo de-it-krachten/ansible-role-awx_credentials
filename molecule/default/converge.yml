@@ -1,0 +1,9 @@
+---
+
+- name: Converge
+  hosts: all
+  vars:
+  tasks:
+    - name: Include role 'awx_credentials'
+      include_role:
+        name: awx_credentials

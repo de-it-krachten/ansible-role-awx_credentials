@@ -1,0 +1,71 @@
+---
+
+# ---------------------------------------------------------
+# Retrieve credential information (no secrets)
+# ---------------------------------------------------------
+
+- name: Get overview of all credentials
+  command: >-
+    {{ venv_awx }} credentials list
+  environment:
+    TOWER_HOST: "{{ awx_credentials['api']['url'] }}"
+    TOWER_USERNAME: "{{ awx_credentials['api']['user'] }}"
+    TOWER_PASSWORD: "{{ awx_credentials['api']['password'] }}"
+    TOWER_VERIFY_SSL: "{{ awx_credentials['api']['validate_certs'] }}"
+  changed_when: false
+  register: _awx_credentials
+
+
+# ---------------------------------------------------------
+# Retrieve credential secrets
+# ---------------------------------------------------------
+
+- name: Get all credential fields from DB
+  community.postgresql.postgresql_query:
+    db: "{{ awx_credentials['db']['name'] }}"
+    login_host: "{{ awx_credentials['db']['host'] }}"
+    port: "{{ awx_credentials['db']['port'] }}"
+    login_user: "{{ awx_credentials['db']['user'] }}"
+    login_password: "{{ awx_credentials['db']['password'] }}"
+    query: 'SELECT * from main_credential'
+  register: _db
+  become: yes
+  changed_when: false
+  delegate_to: localhost
+
+
+# ---------------------------------------------------------
+# Process & write credential data
+# ---------------------------------------------------------
+
+- name: Create output location {{ awx_credentials_dest }}
+  file:
+    path: "{{ awx_credentials_dest }}"
+    state: directory
+    mode: "0700"
+  delegate_to: localhost
+  become: no
+
+- name: Decrypt all crypted values
+  include_tasks: decrypt-docker.yml
+  loop: "{{ _db.query_all_results | json_query('[]') }}"
+  loop_control:
+    loop_var: outer
+    label:
+      - "{{ outer.name }}"
+
+- name: Write credential information to file
+  copy:
+    content: "{{ _awx_credentials.stdout | from_json | json_query('results') | to_nice_json }}"
+    dest: "{{ awx_credentials_dest }}/credential-export.json"
+    mode: "0600"
+  delegate_to: localhost
+  connection: local
+
+- name: Write credential secrets to file
+  copy:
+    content: "{{ pwd_list | to_nice_json }}"
+    dest: "{{ awx_credentials_dest }}/credential-secrets.json"
+    mode: '0600'
+  delegate_to: localhost
+  become: no

@@ -1,0 +1,22 @@
+---
+
+# AWX/Tower identifier
+#awx_credentials_identifier: awx-1
+
+# Path to export files to
+#awx_credentials_dest_root: "/tmp"
+
+# dict with AWX/Tower credentials (API & DB)
+awx_credentials:
+  api:
+    url: https://127.0.0.1
+    user: admin
+    password: admin
+    validate_certs: False
+  db:
+    host: '127.0.0.1'
+    port: '5432'
+    name: awxdb
+    user: awx
+    password: awx
+    secret: secret 

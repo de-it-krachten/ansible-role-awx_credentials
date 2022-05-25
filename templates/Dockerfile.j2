@@ -1,0 +1,9 @@
+FROM rockylinux:8
+
+COPY decrypt.py /tmp/decrypt.py
+
+RUN dnf update -y && \
+    dnf -y install python2 python2-pip python2-psycopg2 && \
+    dnf -y install python3 python3-pip python3-psycopg2 python3-cryptography && \
+    dnf -y install postgresql && \
+    pip2 install cryptography

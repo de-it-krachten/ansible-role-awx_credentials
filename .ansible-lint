@@ -1,0 +1,5 @@
+---
+
+exclude_paths:
+  - .gitlab-ci.yml
+  - molecule/default/molecule-test.yml

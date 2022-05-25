@@ -1,0 +1,34 @@
+---
+
+# ---------------------------------------------------------
+# Build docker image locally
+# ---------------------------------------------------------
+
+- block:
+
+    - name: Create build directory
+      file:
+        path: /tmp/docker-awx
+        state: directory
+        mode: "0700"
+
+    - name: Create Dockerfile from template
+      template:
+        src: "{{ item }}.j2"
+        dest: /tmp/docker-awx/{{ item }}
+        mode: "0755"
+      loop:
+        - Dockerfile
+        - decrypt.py
+
+    - name: Create image from Dockerfile
+      docker_image:
+        name: awx_decrypt:latest
+        source: build
+        build:
+          path: /tmp/docker-awx
+          pull: yes
+
+  run_once: yes
+  become: no
+  delegate_to: localhost
