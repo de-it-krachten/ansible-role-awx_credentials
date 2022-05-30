@@ -1,0 +1,28 @@
+---
+
+# AWX/Tower identifier
+#awx_credentials_identifier: awx-1
+
+# Path to export files to
+#awx_credentials_dest_root: "/tmp"
+
+# Set-up temporary Docker image
+awx_credentials_docker: true
+
+# dict with AWX/Tower credentials (API & DB)
+awx_credentials:
+  api:
+    url: https://127.0.0.1
+    user: admin
+    password: admin
+    validate_certs: False
+  db:
+    host: '127.0.0.1'
+    port: '5432'
+    name: awx
+    user: awx
+    password: awx
+    secret: secret 
+
+# list of decrypted credentials
+awx_credentials_list: []

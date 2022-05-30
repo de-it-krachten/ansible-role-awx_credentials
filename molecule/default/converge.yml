@@ -1,65 +1,5 @@
-[![CI](https://github.com/de-it-krachten/ansible-role-awx_credentials/workflows/CI/badge.svg?event=push)](https://github.com/de-it-krachten/ansible-role-awx_credentials/actions?query=workflow%3ACI)
+---
 
-
-# ansible-role-awx_credentials
-
-import/export credentials from AWX/Tower (including the sensitive data) 
-
-
-## Platforms
-
-Supported platforms
-
-- Red Hat Enterprise Linux 7<sup>1</sup>
-- Red Hat Enterprise Linux 8<sup>1</sup>
-- CentOS 7
-- RockyLinux 8
-- AlmaLinux 8<sup>1</sup>
-- Debian 10 (Buster)
-- Debian 11 (Bullseye)
-- Ubuntu 18.04 LTS
-- Ubuntu 20.04 LTS
-- Ubuntu 22.04 LTS
-
-Note:
-<sup>1</sup> : no automated testing is performed on these platforms
-
-## Role Variables
-### defaults/main.yml
-<pre><code>
-# AWX/Tower identifier
-#awx_credentials_identifier: awx-1
-
-# Path to export files to
-#awx_credentials_dest_root: "/tmp"
-
-# Set-up temporary Docker image
-awx_credentials_docker: true
-
-# dict with AWX/Tower credentials (API & DB)
-awx_credentials:
-  api:
-    url: https://127.0.0.1
-    user: admin
-    password: admin
-    validate_certs: False
-  db:
-    host: '127.0.0.1'
-    port: '5432'
-    name: awx
-    user: awx
-    password: awx
-    secret: secret 
-
-# list of decrypted credentials
-awx_credentials_list: []
-</pre></code>
-
-
-
-## Example Playbook
-### molecule/default/converge.yml
-<pre><code>
 # AWX Credentials
 - hosts: all
   vars_files:
@@ -110,10 +50,9 @@ awx_credentials_list: []
           - "{{ item.name }}"
       tags: molecule-idempotence-notest
 
-    - name: Include role 'awx_credentials'
+    - name: Include role 'ansible-role-awx_credentials'
       include_role:
-        name: awx_credentials
+        name: ansible-role-awx_credentials
       vars:
         # awx_credentials_docker: false
         awx_credentials_mode: export
-</pre></code>

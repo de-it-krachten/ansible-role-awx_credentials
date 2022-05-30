@@ -1,0 +1,22 @@
+---
+
+# Generic
+generic:
+  role: ansible-role-awx_credentials
+  role_short: awx_credentials
+  role_description: |
+    import/export credentials from AWX/Tower (including the sensitive data) 
+
+molecule:
+  converge:
+    vars:
+      awx_credentials_identifier: awx-1
+      awx_credentials_dest_root: /tmp/xxx
+
+ci_templates:
+  verify.yml:
+    force: false
+  converge.yml:
+    force: false
+  molecule.yml.j2:
+    force: false

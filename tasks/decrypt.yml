@@ -1,0 +1,36 @@
+---
+
+# Some versions store the inputs field as string in the database
+# In those cases, we need to convert it in order to be able to process
+- name: Convert input from string if needed
+  set_fact:
+    inputs: >-
+      {{ (outer.inputs|from_json) if outer.inputs is string else outer.inputs }}
+
+- name: Decrypt password for '{{ outer.name }}'
+  command: /tmp/decrypt.py
+  loop: "{{ inputs | dict2items }}"
+  loop_control:
+    label:
+      - "{{ item.key }}"
+  environment:
+    AWX_SECRET_KEY: "{{ awx_credentials['db']['secret'] }}"
+    AWX_NAME: "{{ outer.name }}"
+    AWX_FIELD: "{{ item.key }}"
+    AWX_PASSWORD: "{{ item.value }}"
+    AWX_PK: "{{ outer.id | int }}"
+  vars:
+    awx_id: "{{ outer.id }}"
+  register: _pwd
+  changed_when: false
+  ignore_errors: true
+  when: item.value is search('^\$')
+
+- name: Append to combined list
+  set_fact:
+    awx_credentials_list: "{{ awx_credentials_list + [ (item.stdout|from_json) ] }}"
+  loop: "{{ _pwd.results }}"
+  loop_control:
+    label:
+      - "{{ item.item.key }}"
+  when: item.stdout is defined

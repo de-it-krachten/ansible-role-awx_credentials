@@ -1,0 +1,34 @@
+---
+
+- name: Assertions
+  assert:
+    that:
+      - awx_credentials_dest_root
+      - awx_credentials_identifier
+
+- name: Define output location
+  set_fact:
+    awx_credentials_dest: >-
+      {{ awx_credentials_dest_root }}/{{ awx_credentials_identifier }}
+
+- name: Show output location
+  debug: var=awx_credentials_dest
+
+- name: Setup temporary docker container
+  include_tasks:
+    file: docker.yml
+    apply:
+      run_once: yes
+      become: no
+      delegate_to: localhost
+  when: awx_credentials_docker|bool
+
+- include_tasks: export.yml
+  when:
+    - awx_credentials_mode is defined
+    - awx_credentials_mode == 'export'
+
+- include_tasks: import.yml
+  when:
+    - awx_credentials_mode is defined
+    - awx_credentials_mode == 'import'
