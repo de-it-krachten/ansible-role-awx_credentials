@@ -14,7 +14,14 @@
 - name: Show output location
   debug: var=awx_credentials_dest
 
-- include_tasks: docker.yml
+- name: Setup temporary docker container
+  include_tasks:
+    file: docker.yml
+    apply:
+      run_once: yes
+      become: no
+      delegate_to: localhost
+  when: awx_credentials_docker|bool
 
 - include_tasks: export.yml
   when:

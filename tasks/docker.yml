@@ -4,31 +4,44 @@
 # Build docker image locally
 # ---------------------------------------------------------
 
-- block:
+- name: Create build directory
+  file:
+    path: /tmp/docker-awx
+    state: directory
+    mode: "0700"
 
-    - name: Create build directory
-      file:
-        path: /tmp/docker-awx
-        state: directory
-        mode: "0700"
+- name: Create Dockerfile from template
+  template:
+    src: "{{ item }}.j2"
+    dest: /tmp/docker-awx/{{ item }}
+    mode: "0755"
+  loop:
+    - Dockerfile
+    - decrypt.py
 
-    - name: Create Dockerfile from template
-      template:
-        src: "{{ item }}.j2"
-        dest: /tmp/docker-awx/{{ item }}
-        mode: "0755"
-      loop:
-        - Dockerfile
-        - decrypt.py
+- name: Create image from Dockerfile
+  docker_image:
+    name: awx_decrypt:latest
+    source: build
+    build:
+      path: /tmp/docker-awx
+      pull: yes
 
-    - name: Create image from Dockerfile
-      docker_image:
-        name: awx_decrypt:latest
-        source: build
-        build:
-          path: /tmp/docker-awx
-          pull: yes
+- name: Spin-up container fron new image
+  docker_container:
+    name: awx_decrypt
+    image: awx_decrypt:latest
+    container_default_behavior: no_defaults
 
-  run_once: yes
-  become: no
-  delegate_to: localhost
+- name: Add docker container to inventory
+  add_host:
+    name: awx_decrypt
+    ansible_connection: docker
+    ansible_host: awx_decrypt
+    ansible_user: root
+  changed_when: false
+
+- name: Retrieve facts from new container
+  setup:
+  delegate_facts: true
+  delegate_to: awx_decrypt

@@ -14,6 +14,7 @@
     TOWER_VERIFY_SSL: "{{ awx_credentials['api']['validate_certs'] }}"
   changed_when: false
   register: _awx_credentials
+  delegate_to: awx_decrypt
 
 
 # ---------------------------------------------------------
@@ -31,7 +32,7 @@
   register: _db
   become: yes
   changed_when: false
-  delegate_to: localhost
+  delegate_to: awx_decrypt
 
 
 # ---------------------------------------------------------
@@ -47,7 +48,10 @@
   become: no
 
 - name: Decrypt all crypted values
-  include_tasks: decrypt-docker.yml
+  include_tasks:
+    file: decrypt.yml
+    apply:
+      delegate_to: awx_decrypt
   loop: "{{ _db.query_all_results | json_query('[]') }}"
   loop_control:
     loop_var: outer
@@ -64,7 +68,7 @@
 
 - name: Write credential secrets to file
   copy:
-    content: "{{ pwd_list | to_nice_json }}"
+    content: "{{ awx_credentials_list | to_nice_json }}"
     dest: "{{ awx_credentials_dest }}/credential-secrets.json"
     mode: '0600'
   delegate_to: localhost

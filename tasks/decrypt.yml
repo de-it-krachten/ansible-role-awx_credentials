@@ -14,7 +14,7 @@
     label:
       - "{{ item.key }}"
   environment:
-    AWX_SECRET_KEY: "{{ db_credentials['secret'] }}"
+    AWX_SECRET_KEY: "{{ awx_credentials['db']['secret'] }}"
     AWX_NAME: "{{ outer.name }}"
     AWX_FIELD: "{{ item.key }}"
     AWX_PASSWORD: "{{ item.value }}"
@@ -25,11 +25,10 @@
   changed_when: false
   ignore_errors: true
   when: item.value is search('^\$')
-  delegate_to: localhost
 
 - name: Append to combined list
   set_fact:
-    pwd_list: "{{ pwd_list|default([]) + [ (item.stdout|from_json) ] }}"
+    awx_credentials_list: "{{ awx_credentials_list + [ (item.stdout|from_json) ] }}"
   loop: "{{ _pwd.results }}"
   loop_control:
     label:
