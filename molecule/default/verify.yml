@@ -4,7 +4,21 @@
 - name: Verify
   hosts: all
   gather_facts: false
+  vars_files:
+    - vars.yml
   tasks:
-  - name: Example assertion
-    assert:
-      that: true
+
+    - name: Read all exported passwords
+      set_fact:
+        var1: "{{ lookup('file', awx_credentials_dest_root+'/'+awx_credentials_identifier+'/credential-secrets.json') | from_json }}"
+
+    - name: Reformat into plan dict for easier loopup/comparison
+      set_fact:
+        var2: "{{ var2|default({}) | combine({ item.name: item.password }) }}"
+      loop: "{{ var1 }}"
+
+    - name: Compare all decrypted secrets w/ what is should be
+      fail:
+        msg: "secret decryption failed!"
+      loop: "{{ awx_resources.credentials }}"
+      when: item.inputs.password != var2[item.name]

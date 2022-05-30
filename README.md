@@ -63,44 +63,8 @@ Example Playbook
 <pre><code>
 # AWX Credentials
 - hosts: all
-  vars:
-
-    venv_awx: awx
-
-    awx_credentials_identifier: awx-1
-    awx_credentials_dest_root: /tmp/xxx
-
-    awx_credentials:
-      api:
-        url: https://{{ hostvars['olam']['ansible_default_ipv4']['address'] }}
-        user: admin
-        password: admin
-        validate_certs: False
-      db:
-        host: "{{ hostvars['olam']['ansible_default_ipv4']['address'] }}"
-        port: '5432'
-        name: awx
-        user: awx
-        password: awx
-        secret: 'AtyBFp7amQ+PdLzYWnelo4taPt9cxZ1I9Uff82nzdZqT'
-
-    awx_resources:
-      organizations:
-        - name: org1
-      credentials:
-        - name: cred1
-          credential_type: Machine
-          organization: org1
-          inputs:
-            username: joe
-            password: secret
-        - name: cred2
-          credential_type: Machine
-          organization: org1
-          inputs:
-            username: jane
-            password: topsecret
-
+  vars_files:
+    - vars.yml
   tasks:
 
     - name: Pause play until a URL is reachable from this host
