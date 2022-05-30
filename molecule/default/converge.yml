@@ -86,21 +86,6 @@
           - "{{ item.name }}"
       tags: molecule-idempotence-notest
 
-#    - name: xxx
-#      pip:
-#        name: psycopg2-binary
-#        state: present
-#      become: yes
-#      delegate_to: olam
-#
-#    - name: Set awx database user password
-#      postgresql_query:
-#        db: "{{ awx_credentials.db.name }}"
-#        query: ALTER USER {{ awx_credentials.db.user }} WITH PASSWORD '{{ awx_credentials.db.password }}';
-#      become: yes
-#      become_user: postgres
-#      delegate_to: olam
-
     - name: Include role 'ansible-role-awx_credentials'
       include_role:
         name: ansible-role-awx_credentials

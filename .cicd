@@ -2,7 +2,7 @@
 
 # Generic
 generic:
-  role: awx_credentials
+  role: ansible-role-awx_credentials
   role_short: awx_credentials
   role_description: |
     <put description in .cicd.overwrite>
@@ -64,7 +64,7 @@ github:
   fail_fast: true
   parallel: true
   owner: de-it-krachten
-  repo: awx_credentials
+  repo: ansible-role-awx_credentials
 
 # Gitlab
 gitlab:

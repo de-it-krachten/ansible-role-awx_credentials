@@ -1,7 +1,7 @@
 [![CI](https://github.com/de-it-krachten/ansible-role-awx_credentials/workflows/CI/badge.svg?event=push)](https://github.com/de-it-krachten/ansible-role-awx_credentials/actions?query=workflow%3ACI)
 
 
-# awx_credentials
+# ansible-role-awx_credentials
 
 import/export credentials from AWX/Tower (including the sensitive data) 
 
@@ -146,21 +146,6 @@ Example Playbook
         label:
           - "{{ item.name }}"
       tags: molecule-idempotence-notest
-
-#    - name: xxx
-#      pip:
-#        name: psycopg2-binary
-#        state: present
-#      become: yes
-#      delegate_to: olam
-#
-#    - name: Set awx database user password
-#      postgresql_query:
-#        db: "{{ awx_credentials.db.name }}"
-#        query: ALTER USER {{ awx_credentials.db.user }} WITH PASSWORD '{{ awx_credentials.db.password }}';
-#      become: yes
-#      become_user: postgres
-#      delegate_to: olam
 
     - name: Include role 'awx_credentials'
       include_role:
