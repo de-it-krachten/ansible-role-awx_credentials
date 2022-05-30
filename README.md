@@ -6,8 +6,7 @@
 import/export credentials from AWX/Tower (including the sensitive data) 
 
 
-Platforms
---------------
+## Platforms
 
 Supported platforms
 
@@ -25,8 +24,8 @@ Supported platforms
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
 
-Role Variables
---------------
+## Role Variables
+### defaults/main.yml
 <pre><code>
 # AWX/Tower identifier
 #awx_credentials_identifier: awx-1
@@ -57,9 +56,9 @@ awx_credentials_list: []
 </pre></code>
 
 
-Example Playbook
-----------------
 
+## Example Playbook
+### molecule/default/converge.yml
 <pre><code>
 # AWX Credentials
 - hosts: all
