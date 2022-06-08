@@ -2,8 +2,15 @@ FROM rockylinux:8
 
 COPY decrypt.py /tmp/decrypt.py
 
-RUN dnf update -y && \
-    dnf -y install iproute && \
+RUN \
+{% if proxy_url is defined %}
+    export HTTPS_PROXY={{ proxy_url }} && \
+    export HTTP_PROXY={{ proxy_url }} && \
+    export https_proxy={{ proxy_url }} && \
+    export http_proxy={{ proxy_url }} && \
+{% endif %}
+    dnf update -y && \
+    dnf -y install iproute openssh && \
     dnf -y install python2 python2-pip python2-psycopg2 && \
     dnf -y install python3 python3-pip python3-psycopg2 python3-cryptography && \
     dnf -y install postgresql && \
