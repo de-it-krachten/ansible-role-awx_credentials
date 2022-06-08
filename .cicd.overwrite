@@ -5,7 +5,7 @@ generic:
   role: ansible-role-awx_credentials
   role_short: awx_credentials
   role_description: |
-    import/export credentials from AWX/Tower (including the sensitive data) 
+    import/export credentials from AWX/Tower (including the sensitive data)
 
 molecule:
   converge:

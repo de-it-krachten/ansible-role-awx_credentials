@@ -1,38 +1,82 @@
 ---
 
 # ---------------------------------------------------------
+# Install requirements
+# ---------------------------------------------------------
+
+- name: Install postgresql client
+  package:
+    name: postgresql
+  become: yes
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version|int >= 8
+
+- name: Install awxkit
+  pip:
+    name: awxkit=={{ awx_credentials_awxkit }}
+    executable: pip3
+  become: yes
+
+
+# ---------------------------------------------------------
 # Retrieve credential information (no secrets)
 # ---------------------------------------------------------
 
 - name: Get overview of all credentials
   command: >-
-    {{ venv_awx }} credentials list
+    {{ awx_credentials_cmd }} credentials list
   environment:
     TOWER_HOST: "{{ awx_credentials['api']['url'] }}"
     TOWER_USERNAME: "{{ awx_credentials['api']['user'] }}"
     TOWER_PASSWORD: "{{ awx_credentials['api']['password'] }}"
     TOWER_VERIFY_SSL: "{{ awx_credentials['api']['validate_certs'] }}"
   changed_when: false
+  ignore_errors: true
   register: _awx_credentials
-  delegate_to: awx_decrypt
-
+  # delegate_to: awx_decrypt
 
 # ---------------------------------------------------------
 # Retrieve credential secrets
 # ---------------------------------------------------------
 
-- name: Get all credential fields from DB
-  community.postgresql.postgresql_query:
-    db: "{{ awx_credentials['db']['name'] }}"
-    login_host: "{{ awx_credentials['db']['host'] }}"
-    port: "{{ awx_credentials['db']['port'] }}"
-    login_user: "{{ awx_credentials['db']['user'] }}"
-    login_password: "{{ awx_credentials['db']['password'] }}"
-    query: 'SELECT * from main_credential'
-  register: _db
-  become: yes
+- name: Perform query for all credentials
+  command: >-
+    psql --host={{ awx_credentials['db']['host'] }}
+         --port={{ awx_credentials['db']['port'] }}
+         --dbname={{ awx_credentials['db']['name'] }}
+         --username={{ awx_credentials['db']['user'] }}
+         --command="copy (select * from main_credential) To STDOUT With CSV DELIMITER ',' HEADER;"
   changed_when: false
-  delegate_to: awx_decrypt
+  register: _psql_csv
+  environment:
+    PGPASSWORD: "{{ awx_credentials['db']['password'] }}"
+    PATH: "{{ ansible_env.PATH }}:/opt/rh/rh-postgresql10/root/usr/bin"
+    LD_LIBRARY_PATH: "{{ ansible_env.PATH }}:/opt/rh/rh-postgresql10/root/usr/lib64"
+    LIBRARY_PATH: "{{ ansible_env.PATH }}:/opt/rh/rh-postgresql10/root/usr/lib64"
+
+- name: Create tempfile
+  tempfile:
+  changed_when: false
+  register: _tempfile
+
+- name: Write query results to csv file
+  copy:
+    content: "{{ _psql_csv.stdout }}"
+    dest: "{{ _tempfile.path }}"
+    mode: "0600"
+  changed_when: false
+
+- name: Read csvfile into ansible
+  read_csv:
+    path: "{{ _tempfile.path }}"
+  register: creds
+
+- name: Delete temporary csv file
+  file:
+    path: "{{ _tempfile.path }}"
+    state: absent
+  changed_when: false
 
 
 # ---------------------------------------------------------
@@ -52,7 +96,7 @@
     file: decrypt.yml
     apply:
       delegate_to: awx_decrypt
-  loop: "{{ _db.query_all_results | json_query('[]') }}"
+  loop: "{{ creds.list }}"
   loop_control:
     loop_var: outer
     label:

@@ -39,6 +39,7 @@
     ansible_connection: docker
     ansible_host: awx_decrypt
     ansible_user: root
+    ansible_python_interpreter: /usr/bin/python3
   changed_when: false
 
 - name: Retrieve facts from new container
