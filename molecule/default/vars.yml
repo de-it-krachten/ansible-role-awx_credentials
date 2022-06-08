@@ -1,7 +1,5 @@
 ---
 
-venv_awx: awx
-
 awx_credentials_identifier: awx-1
 awx_credentials_dest_root: /tmp/xxx
 

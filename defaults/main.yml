@@ -26,3 +26,6 @@ awx_credentials:
 
 # list of decrypted credentials
 awx_credentials_list: []
+
+# awxcli/awxkit command
+awx_credentials_cmd: awx
