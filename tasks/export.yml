@@ -14,7 +14,7 @@
 
 - name: Install awxkit
   pip:
-    name: awxkit==17.1.0
+    name: awxkit=={{ awx_credentials_awxkit }}
     executable: pip3
   become: yes
 

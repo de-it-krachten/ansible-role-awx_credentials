@@ -6,6 +6,9 @@
 # Path to export files to
 #awx_credentials_dest_root: "/tmp"
 
+# version of awxkit to use
+awx_credentials_awxkit: 15.0.1
+
 # Set-up temporary Docker image
 awx_credentials_docker: true
 

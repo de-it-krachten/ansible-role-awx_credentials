@@ -19,7 +19,7 @@
 
     - name: Install awxkit
       pip:
-        name: awxkit==15.0.1
+        name: awxkit=={{ awx_credentials_awxkit }}
         state: present
 
     - name: Create all organizations

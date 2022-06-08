@@ -15,6 +15,6 @@ RUN \
     dnf -y install python3 python3-pip python3-psycopg2 python3-cryptography && \
     dnf -y install postgresql && \
     pip2 install cryptography && \
-    pip3 install awxkit==15.0.1
+    pip3 install awxkit=={{ awx_credentials_awxkit }}
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]

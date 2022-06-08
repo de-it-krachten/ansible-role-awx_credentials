@@ -3,7 +3,7 @@
 
 # ansible-role-awx_credentials
 
-import/export credentials from AWX/Tower (including the sensitive data) 
+import/export credentials from AWX/Tower (including the sensitive data)
 
 
 ## Platforms
@@ -33,6 +33,9 @@ Note:
 # Path to export files to
 #awx_credentials_dest_root: "/tmp"
 
+# version of awxkit to use
+awx_credentials_awxkit: 15.0.1
+
 # Set-up temporary Docker image
 awx_credentials_docker: true
 
@@ -53,6 +56,9 @@ awx_credentials:
 
 # list of decrypted credentials
 awx_credentials_list: []
+
+# awxcli/awxkit command
+awx_credentials_cmd: awx
 </pre></code>
 
 
@@ -79,7 +85,7 @@ awx_credentials_list: []
 
     - name: Install awxkit
       pip:
-        name: awxkit==15.0.1
+        name: awxkit=={{ awx_credentials_awxkit }}
         state: present
 
     - name: Create all organizations
