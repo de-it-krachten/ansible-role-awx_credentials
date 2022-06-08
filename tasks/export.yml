@@ -64,6 +64,7 @@
   copy:
     content: "{{ _psql_csv.stdout }}"
     dest: "{{ _tempfile.path }}"
+    mode: "0600"
   changed_when: false
 
 - name: Read csvfile into ansible
