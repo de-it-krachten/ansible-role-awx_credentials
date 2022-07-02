@@ -9,14 +9,13 @@ generic:
 
 molecule:
   converge:
+    pre: converge-pre.yml
     vars:
       awx_credentials_identifier: awx-1
       awx_credentials_dest_root: /tmp/xxx
 
 ci_templates:
   verify.yml:
-    force: false
-  converge.yml:
     force: false
   molecule.yml.j2:
     force: false

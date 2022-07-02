@@ -12,14 +12,20 @@ Supported platforms
 
 - Red Hat Enterprise Linux 7<sup>1</sup>
 - Red Hat Enterprise Linux 8<sup>1</sup>
+- Red Hat Enterprise Linux 9<sup>1</sup>
 - CentOS 7
+- CentOS 8
 - RockyLinux 8
-- AlmaLinux 8<sup>1</sup>
+- OracleLinux 8
+- AlmaLinux 8
+- AlmaLinux 9
 - Debian 10 (Buster)
 - Debian 11 (Bullseye)
 - Ubuntu 18.04 LTS
 - Ubuntu 20.04 LTS
 - Ubuntu 22.04 LTS
+- Fedora 35
+- Fedora 36
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
@@ -66,60 +72,15 @@ awx_credentials_cmd: awx
 ## Example Playbook
 ### molecule/default/converge.yml
 <pre><code>
-# AWX Credentials
-- hosts: all
-  vars_files:
-    - vars.yml
+- import_playbook: converge-pre.yml
+
+- name: sample playbook for role 'awx_credentials'
+  hosts: all
+  vars:
+    awx_credentials_identifier: awx-1
+    awx_credentials_dest_root: /tmp/xxx
   tasks:
-
-    - name: Pause play until a URL is reachable from this host
-      uri:
-        url: "{{ awx_credentials['api']['url'] }}"
-        validate_certs: "{{ awx_credentials['api']['validate_certs'] }}"
-        follow_redirects: yes
-        method: GET
-      register: _result
-      until: _result.status == 200
-      retries: 30
-      delay: 10
-
-    - name: Install awxkit
-      pip:
-        name: awxkit=={{ awx_credentials_awxkit }}
-        state: present
-
-    - name: Create all organizations
-      awx.awx.organization:
-        controller_host: "{{ awx_credentials['api']['url'] }}"
-        controller_username: "{{ awx_credentials['api']['user'] }}"
-        controller_password: "{{ awx_credentials['api']['password'] }}"
-        validate_certs: "{{ awx_credentials['api']['validate_certs'] }}"
-        name: "{{ item.name }}"
-      loop: "{{ awx_resources.organizations }}"
-      loop_control:
-        label:
-          - "{{ item.name }}"
-
-    - name: Create all credentials
-      awx.awx.credential:
-        controller_host: "{{ awx_credentials['api']['url'] }}"
-        controller_username: "{{ awx_credentials['api']['user'] }}"
-        controller_password: "{{ awx_credentials['api']['password'] }}"
-        validate_certs: "{{ awx_credentials['api']['validate_certs'] }}"
-        name: "{{ item.name }}"
-        organization: "{{ item.organization }}"
-        credential_type: "{{ item.credential_type }}"
-        inputs: "{{ item.inputs }}"
-      loop: "{{ awx_resources.credentials }}"
-      loop_control:
-        label:
-          - "{{ item.name }}"
-      tags: molecule-idempotence-notest
-
     - name: Include role 'awx_credentials'
       include_role:
         name: awx_credentials
-      vars:
-        # awx_credentials_docker: false
-        awx_credentials_mode: export
 </pre></code>
