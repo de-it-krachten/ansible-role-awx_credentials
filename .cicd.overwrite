@@ -14,8 +14,6 @@ molecule:
       awx_credentials_dest_root: /tmp/xxx
 
 ci_templates:
-  verify.yml:
-    force: false
   converge.yml:
     force: false
   molecule.yml.j2:
