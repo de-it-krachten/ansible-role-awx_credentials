@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.1.0...v1.2.0) (2022-07-28)
+
+
+### Features
+
+* Implement ansible-lint v6 support ([b7c6788](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/b7c678819d962580c9f196cac07e713e8750ca58))
+
 # [1.1.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.0.0...v1.1.0) (2022-06-08)
 
 
