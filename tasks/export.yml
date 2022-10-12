@@ -5,15 +5,15 @@
 # ---------------------------------------------------------
 
 - name: Install postgresql client
-  package:
+  ansible.builtin.package:
     name: postgresql
   become: yes
   when:
     - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version|int >= 8
+    - ansible_distribution_major_version | int >= 8
 
 - name: Install awxkit
-  pip:
+  ansible.builtin.pip:
     name: awxkit=={{ awx_credentials_awxkit }}
     executable: pip3
   become: yes
@@ -24,7 +24,7 @@
 # ---------------------------------------------------------
 
 - name: Get overview of all credentials
-  command: >-
+  ansible.builtin.command: >-
     {{ awx_credentials_cmd }} credentials list
   environment:
     TOWER_HOST: "{{ awx_credentials['api']['url'] }}"
@@ -40,8 +40,8 @@
 # Retrieve credential secrets
 # ---------------------------------------------------------
 
-- name: Perform query for all credentials
-  command: >-
+- name: Perform query for all credentials  # noqa no-free-form
+  ansible.builtin.command: >-
     psql --host={{ awx_credentials['db']['host'] }}
          --port={{ awx_credentials['db']['port'] }}
          --dbname={{ awx_credentials['db']['name'] }}
@@ -56,24 +56,24 @@
     LIBRARY_PATH: "{{ ansible_env.PATH }}:/opt/rh/rh-postgresql10/root/usr/lib64"
 
 - name: Create tempfile
-  tempfile:
+  ansible.builtin.tempfile:
   changed_when: false
   register: _tempfile
 
 - name: Write query results to csv file
-  copy:
+  ansible.builtin.copy:
     content: "{{ _psql_csv.stdout }}"
     dest: "{{ _tempfile.path }}"
     mode: "0600"
   changed_when: false
 
 - name: Read csvfile into ansible
-  read_csv:
+  community.general.read_csv:
     path: "{{ _tempfile.path }}"
   register: creds
 
 - name: Delete temporary csv file
-  file:
+  ansible.builtin.file:
     path: "{{ _tempfile.path }}"
     state: absent
   changed_when: false
@@ -84,7 +84,7 @@
 # ---------------------------------------------------------
 
 - name: Create output location {{ awx_credentials_dest }}
-  file:
+  ansible.builtin.file:
     path: "{{ awx_credentials_dest }}"
     state: directory
     mode: "0700"
@@ -92,7 +92,7 @@
   become: no
 
 - name: Decrypt all crypted values
-  include_tasks:
+  ansible.builtin.include_tasks:
     file: decrypt.yml
     apply:
       delegate_to: awx_decrypt
@@ -103,7 +103,7 @@
       - "{{ outer.name }}"
 
 - name: Write credential information to file
-  copy:
+  ansible.builtin.copy:
     content: "{{ _awx_credentials.stdout | from_json | json_query('results') | to_nice_json }}"
     dest: "{{ awx_credentials_dest }}/credential-export.json"
     mode: "0600"
@@ -111,7 +111,7 @@
   connection: local
 
 - name: Write credential secrets to file
-  copy:
+  ansible.builtin.copy:
     content: "{{ awx_credentials_list | to_nice_json }}"
     dest: "{{ awx_credentials_dest }}/credential-secrets.json"
     mode: '0600'

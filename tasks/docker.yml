@@ -5,13 +5,13 @@
 # ---------------------------------------------------------
 
 - name: Create build directory
-  file:
+  ansible.builtin.file:
     path: /tmp/docker-awx
     state: directory
     mode: "0700"
 
 - name: Create Dockerfile from template
-  template:
+  ansible.builtin.template:
     src: "{{ item }}.j2"
     dest: /tmp/docker-awx/{{ item }}
     mode: "0755"
@@ -20,7 +20,7 @@
     - decrypt.py
 
 - name: Create image from Dockerfile
-  docker_image:
+  community.docker.docker_image:
     name: awx_decrypt:latest
     source: build
     build:
@@ -28,13 +28,13 @@
       pull: yes
 
 - name: Spin-up container fron new image
-  docker_container:
+  community.docker.docker_container:
     name: awx_decrypt
     image: awx_decrypt:latest
     container_default_behavior: no_defaults
 
 - name: Add docker container to inventory
-  add_host:
+  ansible.builtin.add_host:
     name: awx_decrypt
     ansible_connection: docker
     ansible_host: awx_decrypt
@@ -43,6 +43,6 @@
   changed_when: false
 
 - name: Retrieve facts from new container
-  setup:
+  ansible.builtin.setup:
   delegate_facts: true
   delegate_to: awx_decrypt

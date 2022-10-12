@@ -1,35 +1,35 @@
 ---
 
 - name: Construct credential export name
-  set_fact:
+  ansible.builtin.set_fact:
     credential_export: "{{ awx_import_path }}/credential-export.json"
     credential_secrets: "{{ awx_import_path }}/credential-secrets.json"
 
 - name: Load JSON from disk
-  set_fact:
-    credential_export:  "{{ lookup('file', credential_export) | from_json }}"
+  ansible.builtin.set_fact:
+    credential_export: "{{ lookup('file', credential_export) | from_json }}"
     credential_secrets: "{{ lookup('file', credential_secrets) | from_json }}"
 
-- name: Convert list w/ passwords into dict
-  set_fact:
-    pwd_dict1: "{{ ( pwd_dict1|default({}) ) | combine({ (item.id|string): { 'inputs': { item.field: item.password }} }, recursive=True ) }}"
+- name: Convert list w/ passwords into dict  # noqa jinja[spacing]
+  ansible.builtin.set_fact:
+    pwd_dict1: "{{ (pwd_dict1 | default({})) | combine({ (item.id | string): { 'inputs': { item.field: item.password }} }, recursive=True ) }}"
   loop: "{{ credential_secrets }}"
   loop_control:
     label:
       - "{{ item.id }}"
       - "{{ item.field }}"
 
-- name: Create simplified dict with all inputs
-  set_fact:
+- name: Create simplified dict with all inputs  # noqa jinja[spacing]
+  ansible.builtin.set_fact:
     pwd_dict2: >-
-      {{ ( pwd_dict2|default({}) ) | combine({ (item.id|string): { 'name': item.name, 'type': item.summary_fields.credential_type.name, 'inputs': item.inputs }}, recursive=True) }}
+      {{ (pwd_dict2 | default({})) | combine({ (item.id | string): { 'name': item.name, 'type': item.summary_fields.credential_type.name, 'inputs': item.inputs }}, recursive=True) }}
   loop: "{{ credential_export }}"
   loop_control:
     label:
       - "{{ item.id }}"
 
 - name: Merge both dicts
-  set_fact:
+  ansible.builtin.set_fact:
     pwd_dict: "{{ pwd_dict2 | combine(pwd_dict1, recursive=True) }}"
 
 - name: Add all secrets to existing credentials
@@ -37,11 +37,11 @@
     controller_host: https://127.0.0.1
     controller_username: "{{ tower_awx[awx_type][awx_env]['api_user'] }}"
     controller_password: "{{ tower_awx[awx_type][awx_env]['api_password'] }}"
-    validate_certs: False
+    validate_certs: false
     name: "{{ item.name }}"
-    credential_type: "{{ pwd_dict[(item.id|string)]['type'] }}"
+    credential_type: "{{ pwd_dict[(item.id | string)]['type'] }}"
     organization: "{{ awx_org }}"
-    # inputs: "{{ pwd_dict[(item.id|string)]['inputs'] }}"
+    # inputs: "{{ pwd_dict[(item.id | string)]['inputs'] }}"
   loop: "{{ credential_export }}"
   loop_control:
     label:
