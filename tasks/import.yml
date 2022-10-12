@@ -40,7 +40,8 @@
     validate_certs: False
     name: "{{ item.name }}"
     credential_type: "{{ pwd_dict[(item.id|string)]['type'] }}"
-    inputs: "{{ pwd_dict[(item.id|string)]['inputs'] }}"
+    organization: "{{ awx_org }}"
+    # inputs: "{{ pwd_dict[(item.id|string)]['inputs'] }}"
   loop: "{{ credential_export }}"
   loop_control:
     label:

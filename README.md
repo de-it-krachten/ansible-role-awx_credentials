@@ -6,6 +6,16 @@
 import/export credentials from AWX/Tower (including the sensitive data)
 
 
+
+## Dependencies
+
+#### Roles
+None
+
+#### Collections
+- community.general
+- community.general
+
 ## Platforms
 
 Supported platforms
@@ -66,6 +76,7 @@ awx_credentials_list: []
 # awxcli/awxkit command
 awx_credentials_cmd: awx
 </pre></code>
+
 
 
 
