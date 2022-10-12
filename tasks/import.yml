@@ -22,7 +22,8 @@
 - name: Create simplified dict with all inputs  # noqa jinja[spacing]
   ansible.builtin.set_fact:
     pwd_dict2: >-
-      {{ (pwd_dict2 | default({})) | combine({ (item.id | string): { 'name': item.name, 'type': item.summary_fields.credential_type.name, 'inputs': item.inputs }}, recursive=True) }}
+      {{ (pwd_dict2 | default({})) |
+      combine({ (item.id | string): { 'name': item.name, 'type': item.summary_fields.credential_type.name, 'inputs': item.inputs }}, recursive=True) }}
   loop: "{{ credential_export }}"
   loop_control:
     label:

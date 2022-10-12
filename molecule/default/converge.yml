@@ -10,7 +10,7 @@
       uri:
         url: "{{ awx_credentials['api']['url'] }}"
         validate_certs: "{{ awx_credentials['api']['validate_certs'] }}"
-        follow_redirects: yes
+        follow_redirects: "yes"
         method: GET
       register: _result
       until: _result.status == 200

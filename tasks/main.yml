@@ -3,8 +3,8 @@
 - name: Assertions
   ansible.builtin.assert:
     that:
-      - awx_credentials_dest_root
-      - awx_credentials_identifier
+      - awx_credentials_dest_root is defined
+      - awx_credentials_identifier is defined
 
 - name: Define output location
   ansible.builtin.set_fact:

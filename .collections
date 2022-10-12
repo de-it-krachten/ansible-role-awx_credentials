@@ -3,5 +3,3 @@ collections:
   - awx.awx
   - community.docker
   - community.general
-  - connection
-  - delegate_facts

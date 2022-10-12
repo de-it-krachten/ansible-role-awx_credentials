@@ -14,6 +14,8 @@ None
 
 #### Collections
 - community.general
+- awx.awx
+- community.docker
 - community.general
 
 ## Platforms
@@ -44,10 +46,10 @@ Note:
 ### defaults/main.yml
 <pre><code>
 # AWX/Tower identifier
-#awx_credentials_identifier: awx-1
+# awx_credentials_identifier: awx-1
 
 # Path to export files to
-#awx_credentials_dest_root: "/tmp"
+# awx_credentials_dest_root: /tmp
 
 # version of awxkit to use
 awx_credentials_awxkit: 15.0.1
@@ -61,14 +63,14 @@ awx_credentials:
     url: https://127.0.0.1
     user: admin
     password: admin
-    validate_certs: False
+    validate_certs: false
   db:
     host: '127.0.0.1'
     port: '5432'
     name: awx
     user: awx
     password: awx
-    secret: secret 
+    secret: secret
 
 # list of decrypted credentials
 awx_credentials_list: []
@@ -93,7 +95,7 @@ awx_credentials_cmd: awx
       uri:
         url: "{{ awx_credentials['api']['url'] }}"
         validate_certs: "{{ awx_credentials['api']['validate_certs'] }}"
-        follow_redirects: yes
+        follow_redirects: "yes"
         method: GET
       register: _result
       until: _result.status == 200
