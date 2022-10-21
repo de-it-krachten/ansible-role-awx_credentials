@@ -3,12 +3,12 @@
 # Some versions store the inputs field as string in the database
 # In those cases, we need to convert it in order to be able to process
 - name: Convert input from string if needed
-  set_fact:
+  ansible.builtin.set_fact:
     inputs: >-
-      {{ (outer.inputs|from_json) if outer.inputs is string else outer.inputs }}
+      {{ (outer.inputs | from_json) if outer.inputs is string else outer.inputs }}
 
-- name: Decrypt password for '{{ outer.name }}'
-  command: /tmp/decrypt.py
+- name: Decrypt password for '{{ outer.name }}'  # noqa name[template]
+  ansible.builtin.command: /tmp/decrypt.py
   loop: "{{ inputs | dict2items }}"
   loop_control:
     label:
@@ -27,8 +27,8 @@
   when: item.value is search('^\$')
 
 - name: Append to combined list
-  set_fact:
-    awx_credentials_list: "{{ awx_credentials_list + [ (item.stdout|from_json) ] }}"
+  ansible.builtin.set_fact:
+    awx_credentials_list: "{{ awx_credentials_list + [(item.stdout | from_json)] }}"
   loop: "{{ _pwd.results }}"
   loop_control:
     label:

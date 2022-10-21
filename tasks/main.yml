@@ -1,34 +1,39 @@
 ---
 
 - name: Assertions
-  assert:
+  ansible.builtin.assert:
     that:
-      - awx_credentials_dest_root
-      - awx_credentials_identifier
+      - awx_credentials_dest_root is defined
+      - awx_credentials_identifier is defined
 
 - name: Define output location
-  set_fact:
+  ansible.builtin.set_fact:
     awx_credentials_dest: >-
       {{ awx_credentials_dest_root }}/{{ awx_credentials_identifier }}
 
 - name: Show output location
-  debug: var=awx_credentials_dest
+  ansible.builtin.debug:
+    var: awx_credentials_dest
 
 - name: Setup temporary docker container
-  include_tasks:
+  ansible.builtin.include_tasks:
     file: docker.yml
     apply:
       run_once: yes
       become: no
       delegate_to: localhost
-  when: awx_credentials_docker|bool
+  when:
+    - awx_credentials_docker | bool
+    - awx_credentials_mode == 'export'
 
-- include_tasks: export.yml
+- name: Include export.yml
+  ansible.builtin.include_tasks: export.yml
   when:
     - awx_credentials_mode is defined
     - awx_credentials_mode == 'export'
 
-- include_tasks: import.yml
+- name: Include import.yml
+  ansible.builtin.include_tasks: import.yml
   when:
     - awx_credentials_mode is defined
     - awx_credentials_mode == 'import'

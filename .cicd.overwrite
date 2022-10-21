@@ -11,7 +11,7 @@ molecule:
   converge:
     vars:
       awx_credentials_identifier: awx-1
-      awx_credentials_dest_root: /tmp/xxx
+      awx_credentials_dest_root: "/tmp/xxx"
 
 ci_templates:
   converge.yml:
