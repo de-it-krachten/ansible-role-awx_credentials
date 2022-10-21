@@ -23,7 +23,12 @@
   ansible.builtin.set_fact:
     pwd_dict2: >-
       {{ (pwd_dict2 | default({})) |
-      combine({ (item.id | string): { 'name': item.name, 'type': item.summary_fields.credential_type.name, 'inputs': item.inputs }}, recursive=True) }}
+      combine({ (item.id | string): { 'name': item.name,
+                                      'organization': item.summary_fields.organization.name,
+                                      'type': item.summary_fields.credential_type.name,
+                                      'inputs': item.inputs
+                                    }
+              }, recursive=True) }}
   loop: "{{ credential_export }}"
   loop_control:
     label:
@@ -35,14 +40,14 @@
 
 - name: Add all secrets to existing credentials
   awx.awx.credential:
-    controller_host: https://127.0.0.1
-    controller_username: "{{ tower_awx[awx_type][awx_env]['api_user'] }}"
-    controller_password: "{{ tower_awx[awx_type][awx_env]['api_password'] }}"
-    validate_certs: false
+    controller_host: "{{ awx_credentials['api']['url'] }}"
+    controller_username: "{{ awx_credentials['api']['user'] }}"
+    controller_password: "{{ awx_credentials['api']['password'] }}"
+    validate_certs: "{{ awx_credentials['api']['validate_certs'] }}"
     name: "{{ item.name }}"
     credential_type: "{{ pwd_dict[(item.id | string)]['type'] }}"
-    organization: "{{ awx_org }}"
-    # inputs: "{{ pwd_dict[(item.id | string)]['inputs'] }}"
+    organization: "{{ pwd_dict[(item.id | string)]['organization'] }}"
+    inputs: "{{ pwd_dict[(item.id | string)]['inputs'] }}"
   loop: "{{ credential_export }}"
   loop_control:
     label:

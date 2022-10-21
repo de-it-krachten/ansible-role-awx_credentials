@@ -6,6 +6,12 @@
 # Path to export files to
 # awx_credentials_dest_root: /tmp
 
+# vault password to use for encrypting output
+# awx_credentials_vault_pass: "very-secret-and-strong-password"
+
+# vault id to use for encrypting output
+# awx_credentials_vault_id: default
+
 # version of awxkit to use
 awx_credentials_awxkit: 15.0.1
 

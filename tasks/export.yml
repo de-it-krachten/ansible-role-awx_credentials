@@ -12,12 +12,13 @@
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version | int >= 8
 
-- name: Install awxkit
+- name: Install pypi packages (awxkit/pexpect)
   ansible.builtin.pip:
-    name: awxkit=={{ awx_credentials_awxkit }}
+    name:
+      - awxkit=={{ awx_credentials_awxkit }}
+      - pexpect
     executable: pip3
   become: yes
-
 
 # ---------------------------------------------------------
 # Retrieve credential information (no secrets)
@@ -117,3 +118,24 @@
     mode: '0600'
   delegate_to: localhost
   become: no
+
+- name: Encrypt credentials
+  when: awx_credentials_vault_pass is defined
+  delegate_to: localhost
+  connection: local
+  become: no
+  block:
+
+    - name: Encrypt the file
+      ansible.builtin.expect:
+        command: ansible-vault encrypt --ask-vault-pass --encrypt-vault-id {{ awx_credentials_vault_id }} {{ awx_credentials_dest }}/credential-secrets.json
+        responses:
+          New Vault password: "{{ awx_credentials_vault_pass }}"
+          Confirm New Vault password: "{{ awx_credentials_vault_pass }}"
+
+  rescue:
+
+    - name: Delete unencrypted file
+      ansible.builtin.file:
+        path: "{{ awx_credentials_dest }}/credential-secrets.json"
+        state: absent
