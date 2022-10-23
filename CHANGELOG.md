@@ -1,3 +1,12 @@
+# [1.3.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.2.0...v1.3.0) (2022-10-23)
+
+
+### Features
+
+* Add support for encrypting results using ansible-vault ([6c7b920](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/6c7b92058958ecf6441a10e2cacbb0409e3ba41c))
+* Move to FQCN ([ace241e](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/ace241ec91383d1a4918caa94e7e1060e7d2892e))
+* Update CI to latest standards ([7256c7a](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/7256c7adc3119398e2eca8da476f9277a3339407))
+
 # [1.2.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.1.0...v1.2.0) (2022-07-28)
 
 
