@@ -26,7 +26,7 @@
 
 - name: Get overview of all credentials
   ansible.builtin.command: >-
-    {{ awx_credentials_cmd }} credentials list
+    {{ awx_credentials_cmd }} credentials list --all
   environment:
     TOWER_HOST: "{{ awx_credentials['api']['url'] }}"
     TOWER_USERNAME: "{{ awx_credentials['api']['user'] }}"
