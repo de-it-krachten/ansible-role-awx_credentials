@@ -12,7 +12,9 @@
 
 - name: Convert list w/ passwords into dict  # noqa jinja[spacing]
   ansible.builtin.set_fact:
-    pwd_dict1: "{{ (pwd_dict1 | default({})) | combine({ (item.id | string): { 'inputs': { item.field: item.password }} }, recursive=True ) }}"
+    pwd_dict1: >-
+      {{ (pwd_dict1 | default({})) |
+      combine({ (item.id | string): { 'inputs': { item.field: item.password }} }, recursive=True ) }}
   loop: "{{ credential_secrets }}"
   loop_control:
     label:
@@ -25,6 +27,7 @@
       {{ (pwd_dict2 | default({})) |
       combine({ (item.id | string): { 'name': item.name,
                                       'organization': item.summary_fields.organization.name,
+                                      'description': item.description,
                                       'type': item.summary_fields.credential_type.name,
                                       'inputs': item.inputs
                                     }
@@ -45,9 +48,11 @@
     controller_password: "{{ awx_credentials['api']['password'] }}"
     validate_certs: "{{ awx_credentials['api']['validate_certs'] }}"
     name: "{{ item.name }}"
+    description: "{{ pwd_dict[(item.id | string)]['description'] }}"
     credential_type: "{{ pwd_dict[(item.id | string)]['type'] }}"
     organization: "{{ pwd_dict[(item.id | string)]['organization'] }}"
     inputs: "{{ pwd_dict[(item.id | string)]['inputs'] }}"
+    update: false
   loop: "{{ credential_export }}"
   loop_control:
     label:
