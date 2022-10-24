@@ -52,7 +52,7 @@
     credential_type: "{{ pwd_dict[(item.id | string)]['type'] }}"
     organization: "{{ pwd_dict[(item.id | string)]['organization'] }}"
     inputs: "{{ pwd_dict[(item.id | string)]['inputs'] }}"
-    update: false
+    update_secrets: "{{ awx_credentials_update_secrets }}"
   loop: "{{ credential_export }}"
   loop_control:
     label:

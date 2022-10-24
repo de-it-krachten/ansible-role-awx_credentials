@@ -58,6 +58,11 @@ awx_credentials_awxkit: 15.0.1
 # Set-up temporary Docker image
 awx_credentials_docker: true
 
+# Should crendetial be updated
+# true will always update encrypted values.
+# false will only updated encrypted values if a change is absolutely known to be needed.
+awx_credentials_update_secrets: false
+
 # dict with AWX/Tower credentials (API & DB)
 awx_credentials:
   api:
