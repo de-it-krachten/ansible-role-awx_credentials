@@ -1,3 +1,12 @@
+## [1.3.2](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.3.1...v1.3.2) (2022-10-24)
+
+
+### Bug Fixes
+
+* Add description to import phase ([83305b3](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/83305b3570240cc68b3c6916902a42c9f6853df8))
+* change import behaviour to skip updates on encrypted values ([2433d9c](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/2433d9c56406a54798596a6ef18e19c7003f60a4))
+* fix issue where only first 25 credential were exported ([23fffa3](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/23fffa37f3a4238f81f5d43384a07f1dda722619))
+
 ## [1.3.1](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.3.0...v1.3.1) (2022-10-24)
 
 
