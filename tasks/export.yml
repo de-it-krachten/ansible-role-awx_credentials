@@ -126,16 +126,19 @@
   become: no
   block:
 
-    - name: Encrypt the file
-      ansible.builtin.expect:
-        command: ansible-vault encrypt --ask-vault-pass --encrypt-vault-id {{ awx_credentials_vault_id }} {{ awx_credentials_dest }}/credential-secrets.json
-        responses:
-          New Vault password: "{{ awx_credentials_vault_pass }}"
-          Confirm New Vault password: "{{ awx_credentials_vault_pass }}"
+    - name: Encrypt the file  # noqa no-changed-when no-free-form
+      ansible.builtin.shell: |
+        umask 077
+        pass=$(mktemp)
+        secrets={{ awx_credentials_dest }}/credential-secrets.json
+        echo '{{ awx_credentials_vault_pass }}' > $pass
+        gpg -q -z 6 --cipher-algo AES256 --batch --passphrase-file $pass --symmetric $secrets
+        shred -n 3 -z -u $secrets
+        shred -n 3 -z -u $pass
 
   rescue:
 
     - name: Delete unencrypted file
-      ansible.builtin.file:
-        path: "{{ awx_credentials_dest }}/credential-secrets.json"
-        state: absent
+      ansible.builtin.command:
+        cmd: shred -n 3 -z -u {{ awx_credentials_dest }}/credential-secrets.json
+      changed_when: false

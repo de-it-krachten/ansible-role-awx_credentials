@@ -4,6 +4,15 @@
   ansible.builtin.set_fact:
     credential_export: "{{ awx_import_path }}/credential-export.json"
     credential_secrets: "{{ awx_import_path }}/credential-secrets.json"
+    credential_secrets_gpg: "{{ awx_import_path }}/credential-secrets.json.gpg"
+
+- name: Decrypt secrets  # noqa no-changed-when no-free-form
+  ansible.builtin.shell: |
+    umask 077
+    pass=$(mktemp)
+    echo "{{ awx_credentials_vault_pass }}" > $pass
+    gpg -q --batch --yes --passphrase-file $pass --decrypt --output {{ credential_secrets }} {{ credential_secrets_gpg }}
+    shred -n 3 -z -u $pass
 
 - name: Load JSON from disk
   ansible.builtin.set_fact:
@@ -58,3 +67,9 @@
     label:
       - "{{ item.id }}"
       - "{{ item.name }}"
+
+- name: Delete unencrypted credentials from disk
+  ansible.builtin.command:
+    cmd: shred -n 3 -z -u {{ credential_secrets_gpg }}
+  changed_when: false
+
