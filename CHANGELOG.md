@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.3.2...v1.4.0) (2022-11-10)
+
+
+### Features
+
+* Move encryption from vault -> gpg ([c121ba9](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/c121ba94245243b832d525f5daabb5f2d620942c))
+
 ## [1.3.2](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.3.1...v1.3.2) (2022-10-24)
 
 
