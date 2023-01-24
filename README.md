@@ -26,7 +26,7 @@ Supported platforms
 - RockyLinux 8<sup>1</sup>
 - RockyLinux 9<sup>1</sup>
 - OracleLinux 8
-- OracleLinux 9
+- OracleLinux 9<sup>1</sup>
 - AlmaLinux 8<sup>1</sup>
 - AlmaLinux 9<sup>1</sup>
 - Debian 11 (Bullseye)<sup>1</sup>
@@ -96,6 +96,29 @@ awx_credentials_cmd: awx
   vars_files:
     - vars.yml
   tasks:
+
+    - name: Show settings
+      ansible.builtin.debug:
+        var: awx_credentials
+
+    - name: Xxx
+      pause:
+        seconds: 120
+
+    - name: Xxx
+      shell: |
+        set -vx
+        exec 2>&1
+        ip a s
+        ps -ef
+        ss -tulpen
+        curl --insecure https://127.0.0.1
+      failed_when: false
+      register: x
+
+    - name: Xxx
+      debug:
+        var: x.stdout_lines
 
     - name: Pause play until a URL is reachable from this host
       uri:
