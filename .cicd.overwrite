@@ -36,6 +36,9 @@ platforms:
     molecule:
       docker:
         image: "dropveter/olam:latest"
+  oraclelinux9:
+    ci: false
+    supported: true
   almalinux8:
     ci: false
     supported: true
@@ -57,10 +60,10 @@ platforms:
   ubuntu2204:
     ci: false
     supported: true
-  fedora35:
+  fedora36:
     ci: false
     supported: false
-  fedora36:
+  fedora37:
     ci: false
     supported: true
   alpine:
@@ -78,5 +81,5 @@ molecule:
 ci_templates:
   converge.yml:
     force: false
-  molecule.yml.j2:
-    force: false
+#  molecule.yml.j2:
+#    force: false

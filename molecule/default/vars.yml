@@ -1,22 +1,23 @@
 ---
 
+awx_container: "awx_credentials-oraclelinux8-node1"
 awx_credentials_identifier: awx-1
 awx_credentials_dest_root: "/tmp/xxx"
 awx_credentials_awxkit: 15.0.1
 
 awx_credentials:
   api:
-    url: https://{{ hostvars['olam']['ansible_default_ipv4']['address'] }}
+    url: https://{{ hostvars[awx_container]['ansible_default_ipv4']['address'] }}
     user: admin
     password: admin
     validate_certs: False
   db:
-    host: "{{ hostvars['olam']['ansible_default_ipv4']['address'] }}"
+    host: "{{ hostvars[awx_container]['ansible_default_ipv4']['address'] }}"
     port: '5432'
     name: awx
     user: awx
     password: awx
-    secret: 'AtyBFp7amQ+PdLzYWnelo4taPt9cxZ1I9Uff82nzdZqT'
+    secret: "{{ lookup('pipe', 'docker exec ' + awx_container + ' cat /etc/tower/SECRET_KEY') }}"
 
 awx_resources:
   organizations:
