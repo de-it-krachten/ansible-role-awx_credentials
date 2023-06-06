@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.4.0...v1.4.1) (2023-06-06)
+
+
+### Bug Fixes
+
+* Remove unencrypted passwords from disk ([2896be5](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/2896be53c728533389de0f6ffefa4827c11596b3))
+
 # [1.4.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.3.2...v1.4.0) (2022-11-10)
 
 
