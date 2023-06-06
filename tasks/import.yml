@@ -3,7 +3,7 @@
 - name: Construct credential export name
   ansible.builtin.set_fact:
     credential_export: "{{ awx_import_path }}/credential-export.json"
-    credential_secrets: "{{ awx_import_path }}/credential-secrets.json"
+    credential_secrets_json: "{{ awx_import_path }}/credential-secrets.json"
     credential_secrets_gpg: "{{ awx_import_path }}/credential-secrets.json.gpg"
 
 - name: Decrypt secrets  # noqa no-changed-when no-free-form
@@ -11,13 +11,19 @@
     umask 077
     pass=$(mktemp)
     echo "{{ awx_credentials_vault_pass }}" > $pass
-    gpg -q --batch --yes --passphrase-file $pass --decrypt --output {{ credential_secrets }} {{ credential_secrets_gpg }}
+    gpg -q --batch --yes --passphrase-file $pass --decrypt --output {{ credential_secrets_json }} {{ credential_secrets_gpg }}
     shred -n 3 -z -u $pass
+  no_log: true
 
 - name: Load JSON from disk
   ansible.builtin.set_fact:
     credential_export: "{{ lookup('file', credential_export) | from_json }}"
-    credential_secrets: "{{ lookup('file', credential_secrets) | from_json }}"
+    credential_secrets: "{{ lookup('file', credential_secrets_json) | from_json }}"
+
+- name: Delete unencrypted credentials from disk
+  ansible.builtin.command:
+    cmd: shred -n 3 -z -u {{ credential_secrets_json }}
+  changed_when: false
 
 - name: Convert list w/ passwords into dict  # noqa jinja[spacing]
   ansible.builtin.set_fact:
@@ -67,9 +73,3 @@
     label:
       - "{{ item.id }}"
       - "{{ item.name }}"
-
-- name: Delete unencrypted credentials from disk
-  ansible.builtin.command:
-    cmd: shred -n 3 -z -u {{ credential_secrets_gpg }}
-  changed_when: false
-
