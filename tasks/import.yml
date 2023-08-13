@@ -10,9 +10,12 @@
   ansible.builtin.shell: |
     umask 077
     pass=$(mktemp)
+    trap 'shred -n 3 -z -u $pass' EXIT
     echo "{{ awx_credentials_vault_pass }}" > $pass
     gpg -q --batch --yes --passphrase-file $pass --decrypt --output {{ credential_secrets_json }} {{ credential_secrets_gpg }}
-    shred -n 3 -z -u $pass
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
   no_log: true
 
 - name: Load JSON from disk
@@ -24,6 +27,7 @@
   ansible.builtin.command:
     cmd: shred -n 3 -z -u {{ credential_secrets_json }}
   changed_when: false
+  delegate_to: localhost
 
 - name: Convert list w/ passwords into dict  # noqa jinja[spacing]
   ansible.builtin.set_fact:
