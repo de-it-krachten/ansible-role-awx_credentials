@@ -1,3 +1,16 @@
+# [1.5.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.4.1...v1.5.0) (2023-09-20)
+
+
+### Bug Fixes
+
+* Change loop/label for latest ansible ([f6a3930](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/f6a393053ff95b6c83afd0b8b04ae27769ae2b23))
+* Delegate import to localhost ([102e3f9](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/102e3f9f644f3757a86a7a132b36ef100e83482f))
+
+
+### Features
+
+* Update supported platforms & CI ([14e8841](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/14e8841080537e1dcc08ab23641c714d5ffc24b8))
+
 ## [1.4.1](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.4.0...v1.4.1) (2023-06-06)
 
 
