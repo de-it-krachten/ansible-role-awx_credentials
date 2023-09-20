@@ -31,8 +31,7 @@
         name: "{{ item.name }}"
       loop: "{{ awx_resources.organizations }}"
       loop_control:
-        label:
-          - "{{ item.name }}"
+        label: "{{ item.name }}"
 
     - name: Create all credentials
       awx.awx.credential:
@@ -46,8 +45,7 @@
         inputs: "{{ item.inputs }}"
       loop: "{{ awx_resources.credentials }}"
       loop_control:
-        label:
-          - "{{ item.name }}"
+        label: "{{ item.name }}"
       tags: molecule-idempotence-notest
 
     - name: Include role 'ansible-role-awx_credentials'

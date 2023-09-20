@@ -36,9 +36,7 @@
       combine({ (item.id | string): { 'inputs': { item.field: item.password }} }, recursive=True ) }}
   loop: "{{ credential_secrets }}"
   loop_control:
-    label:
-      - "{{ item.id }}"
-      - "{{ item.field }}"
+    label: "{{ item.id }} / {{ item.field }}"
 
 - name: Create simplified dict with all inputs  # noqa jinja[spacing]
   ansible.builtin.set_fact:
@@ -53,8 +51,7 @@
               }, recursive=True) }}
   loop: "{{ credential_export }}"
   loop_control:
-    label:
-      - "{{ item.id }}"
+    label: "{{ item.id }}"
 
 - name: Merge both dicts
   ansible.builtin.set_fact:
@@ -74,6 +71,4 @@
     update_secrets: "{{ awx_credentials_update_secrets }}"
   loop: "{{ credential_export }}"
   loop_control:
-    label:
-      - "{{ item.id }}"
-      - "{{ item.name }}"
+    label: "{{ item.id }} / {{ item.name }}"

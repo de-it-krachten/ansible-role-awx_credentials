@@ -100,8 +100,7 @@
   loop: "{{ creds.list }}"
   loop_control:
     loop_var: outer
-    label:
-      - "{{ outer.name }}"
+    label: "{{ outer.name }}"
 
 - name: Write credential information to file
   ansible.builtin.copy:

@@ -39,6 +39,12 @@ platforms:
   oraclelinux9:
     ci: false
     supported: true
+  opensuse15:
+    ci: false
+    supported: false
+  sles15:
+    ci: false
+    supported: false
   almalinux8:
     ci: false
     supported: true
@@ -51,6 +57,9 @@ platforms:
   debian11:
     ci: false
     supported: true
+  debian12:
+    ci: false
+    supported: true
   ubuntu1804:
     ci: false
     supported: false
@@ -60,7 +69,7 @@ platforms:
   ubuntu2204:
     ci: false
     supported: true
-  fedora38:
+  fedora37:
     ci: false
     supported: false
   fedora38:
