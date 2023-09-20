@@ -30,9 +30,10 @@ Supported platforms
 - AlmaLinux 8<sup>1</sup>
 - AlmaLinux 9<sup>1</sup>
 - Debian 11 (Bullseye)<sup>1</sup>
+- Debian 12 (Bookworm)<sup>1</sup>
 - Ubuntu 20.04 LTS<sup>1</sup>
 - Ubuntu 22.04 LTS<sup>1</sup>
-- Fedora 37<sup>1</sup>
+- Fedora 38<sup>1</sup>
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
@@ -122,8 +123,7 @@ awx_credentials_cmd: awx
         name: "{{ item.name }}"
       loop: "{{ awx_resources.organizations }}"
       loop_control:
-        label:
-          - "{{ item.name }}"
+        label: "{{ item.name }}"
 
     - name: Create all credentials
       awx.awx.credential:
@@ -137,8 +137,7 @@ awx_credentials_cmd: awx
         inputs: "{{ item.inputs }}"
       loop: "{{ awx_resources.credentials }}"
       loop_control:
-        label:
-          - "{{ item.name }}"
+        label: "{{ item.name }}"
       tags: molecule-idempotence-notest
 
     - name: Include role 'awx_credentials'

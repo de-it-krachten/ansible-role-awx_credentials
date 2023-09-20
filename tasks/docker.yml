@@ -27,7 +27,7 @@
       path: /tmp/docker-awx
       pull: yes
 
-- name: Spin-up container fron new image
+- name: Spin-up container from new image
   community.docker.docker_container:
     name: awx_decrypt
     image: awx_decrypt:latest

@@ -3,7 +3,7 @@ FROM rockylinux:8
 COPY decrypt.py /tmp/decrypt.py
 
 RUN \
-{% if proxy_url is defined %}
+{% if proxy_url is defined and proxy_url | length > 0 %}
     export HTTPS_PROXY={{ proxy_url }} && \
     export HTTP_PROXY={{ proxy_url }} && \
     export https_proxy={{ proxy_url }} && \
