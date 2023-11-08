@@ -35,7 +35,8 @@
   changed_when: false
   ignore_errors: true
   register: _awx_credentials
-  # delegate_to: awx_decrypt
+  delegate_to: "{{ execution_host | default(omit) }}"
+
 
 # ---------------------------------------------------------
 # Retrieve credential secrets
