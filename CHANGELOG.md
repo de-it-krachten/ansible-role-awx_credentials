@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.5.0...v1.5.1) (2023-11-08)
+
+
+### Bug Fixes
+
+* Add option delegation ([92def0f](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/92def0fe6455e05b6730f47752c772980dc578a0))
+
 # [1.5.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.4.1...v1.5.0) (2023-09-20)
 
 
