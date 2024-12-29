@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.6.0...v1.7.0) (2024-12-29)
+
+
+### Features
+
+* Update supported platforms & CI ([e812c95](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/e812c9502d0e087df155f407c1fa3bfe0d8748b8))
+
 # [1.6.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.5.1...v1.6.0) (2024-06-03)
 
 
