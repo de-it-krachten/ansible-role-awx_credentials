@@ -39,6 +39,7 @@ Supported platforms
 - Ubuntu 20.04 LTS<sup>1</sup>
 - Ubuntu 22.04 LTS<sup>1</sup>
 - Ubuntu 24.04 LTS<sup>1</sup>
+- Fedora 41<sup>1</sup>
 - Fedora 42<sup>1</sup>
 
 Note:

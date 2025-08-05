@@ -83,7 +83,7 @@ platforms:
     supported: true
   fedora41:
     ci: false
-    supported: false
+    supported: true
   fedora42:
     ci: false
     supported: true
