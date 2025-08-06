@@ -1,3 +1,14 @@
+# [1.8.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.7.0...v1.8.0) (2025-08-06)
+
+
+### Features
+
+* Add support for AlmaLinux 10 ([9b1a57c](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/9b1a57c36906bacb34bd8569d0da1183f37e0896))
+* Add support for Debian 13 (Trixie) ([912d5bb](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/912d5bb1a48ec6d9a148fb1bde3e041e25dbb628))
+* Add support for OracleLinux 10 ([8c64819](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/8c64819ea0c5d1d92de42eebebc07a2b22fbfd5a))
+* Add support for Red Hat Enterprise Linux 10 ([068eee7](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/068eee76c8b42f908145fd343a196c4336efa1c9))
+* Add support for RockyLinux 10 ([d5de055](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/d5de05576a8a60cbad53caad0b4700948320cca9))
+
 # [1.7.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.6.0...v1.7.0) (2024-12-29)
 
 
