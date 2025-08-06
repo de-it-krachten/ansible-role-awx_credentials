@@ -27,7 +27,7 @@
 
 - name: Append to combined list
   ansible.builtin.set_fact:
-    awx_credentials_list: "{{ awx_credentials_list + [(item.stdout | from_json)] }}"
+    awx_credentials_list: "{{ awx_credentials_list + [item.stdout | from_json] }}"
   loop: "{{ _pwd.results }}"
   loop_control:
     label: "{{ item.item.key }}"
