@@ -28,7 +28,7 @@ awx_credentials:
   api:
     url: https://127.0.0.1
     user: admin
-    password: admin
+    password: "Admin123!"
     validate_certs: false
   db:
     host: '127.0.0.1'

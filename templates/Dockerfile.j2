@@ -11,10 +11,12 @@ RUN \
 {% endif %}
     dnf update -y && \
     dnf -y install iproute openssh && \
-    dnf -y install python2 python2-pip python2-psycopg2 && \
-    dnf -y install python3 python3-pip python3-psycopg2 python3-cryptography && \
+    dnf -y install python3.11 python3-pip python3-psycopg2 python3-cryptography && \
     dnf -y install postgresql && \
-    pip2 install cryptography && \
-    pip3 install awxkit=={{ awx_credentials_awxkit }}
+    mkdir -p /usr/local/venv/awxkit && \
+    python3.11 -m venv /usr/local/venv/awxkit && \
+    /usr/local/venv/awxkit/bin/pip3 install pip wheel "setuptools<81" --upgrade && \
+    /usr/local/venv/awxkit/bin/pip3 install awxkit=={{ awx_credentials_awxkit }} && \
+    ln -s /usr/local/venv/awxkit/bin/awx /usr/local/bin/awx
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]

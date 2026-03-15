@@ -10,7 +10,7 @@ import/export credentials from AWX/Tower (including the sensitive data)
 ## Dependencies
 
 #### Roles
-None
+- deitkrachten.awx_cli
 
 #### Collections
 - awx.awx
@@ -27,7 +27,7 @@ Supported platforms
 - RockyLinux 8<sup>1</sup>
 - RockyLinux 9<sup>1</sup>
 - RockyLinux 10<sup>1</sup>
-- OracleLinux 8
+- OracleLinux 8<sup>1</sup>
 - OracleLinux 9<sup>1</sup>
 - OracleLinux 10<sup>1</sup>
 - AlmaLinux 8<sup>1</sup>
@@ -39,11 +39,12 @@ Supported platforms
 - Ubuntu 20.04 LTS<sup>1</sup>
 - Ubuntu 22.04 LTS<sup>1</sup>
 - Ubuntu 24.04 LTS<sup>1</sup>
-- Fedora 41<sup>1</sup>
 - Fedora 42<sup>1</sup>
+- Fedora 43<sup>1</sup>
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
+
 
 ## Role Variables
 ### defaults/main.yml
@@ -76,7 +77,7 @@ awx_credentials:
   api:
     url: https://127.0.0.1
     user: admin
-    password: admin
+    password: "Admin123!"
     validate_certs: false
   db:
     host: '127.0.0.1'
@@ -102,6 +103,8 @@ awx_credentials_cmd: awx
 - hosts: all
   vars_files:
     - vars.yml
+  roles:
+    - deitkrachten.awx_cli
   tasks:
     - name: Pause play until a URL is reachable from this host
       uri:
@@ -113,10 +116,6 @@ awx_credentials_cmd: awx
       until: _result.status == 200
       retries: 30
       delay: 10
-    - name: Install awxkit
-      pip:
-        name: awxkit=={{ awx_credentials_awxkit }}
-        state: present
     - name: Create all organizations
       awx.awx.organization:
         controller_host: '{{ awx_credentials[''api''][''url''] }}'

@@ -1,26 +1,6 @@
 ---
 
 # ---------------------------------------------------------
-# Install requirements
-# ---------------------------------------------------------
-
-- name: Install postgresql client
-  ansible.builtin.package:
-    name: postgresql
-  become: yes
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution_major_version | int >= 8
-
-- name: Install pypi packages (awxkit/pexpect)
-  ansible.builtin.pip:
-    name:
-      - awxkit=={{ awx_credentials_awxkit }}
-      - pexpect
-    executable: pip3
-  become: yes
-
-# ---------------------------------------------------------
 # Retrieve credential information (no secrets)
 # ---------------------------------------------------------
 

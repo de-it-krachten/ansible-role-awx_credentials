@@ -9,90 +9,76 @@ generic:
 
 # Supported platforms
 platforms:
-  rhel7:
-    ci: false
-    supported: false
-  rhel8:
-    ci: false
-    supported: true
-  rhel9:
-    ci: false
-    supported: true
-  rhel10:
-    ci: false
-    supported: true
   rockylinux8:
-    ci: false
     supported: true
+    ci: false
   rockylinux9:
-    ci: false
     supported: true
+    ci: false
   rockylinux10:
-    ci: false
     supported: true
+    ci: false
   oraclelinux8:
-    ci: true
     supported: true
-    molecule:
-      docker:
-        image: "dropveter/olam:latest"
+    ci: false
   oraclelinux9:
-    ci: false
     supported: true
+    ci: false
   oraclelinux10:
-    ci: false
     supported: true
-  opensuse15:
     ci: false
+  olam8:
     supported: false
-  sles15:
-    ci: false
-    supported: false
+    ci: true
   almalinux8:
-    ci: false
     supported: true
+    ci: false
   almalinux9:
-    ci: false
     supported: true
+    ci: false
   almalinux10:
-    ci: false
     supported: true
-  debian10:
     ci: false
-    supported: false
   debian11:
-    ci: false
     supported: true
+    ci: false
   debian12:
-    ci: false
     supported: true
+    ci: false
   debian13:
-    ci: false
     supported: true
-  ubuntu1804:
     ci: false
-    supported: false
   ubuntu2004:
-    ci: false
     supported: true
+    ci: false
   ubuntu2204:
-    ci: false
     supported: true
+    ci: false
   ubuntu2404:
-    ci: false
     supported: true
-  fedora41:
     ci: false
-    supported: true
   fedora42:
-    ci: false
     supported: true
-  alpine:
     ci: false
-    supported: false
+  fedora43:
+    supported: true
+    ci: false
+
+# Dependencies 
+dependencies:
+  roles: 
+    - deitkrachten.awx_cli
+  collections:
+    - awx.awx
 
 # Molecule
 molecule:
+  requirements:
+    roles_extra:
+      - deitkrachten.awx_cli
+  prepare:
+    vars:
+      activate_epel: true
   converge:
     vars:
       awx_credentials_identifier: awx-1
