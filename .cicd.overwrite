@@ -18,12 +18,18 @@ platforms:
   rockylinux10:
     supported: true
     ci: false
+  oraclelinux8:
+    supported: true
+    ci: false
   oraclelinux9:
     supported: true
     ci: false
   oraclelinux10:
     supported: true
     ci: false
+  olam8:
+    supported: false
+    ci: true
   almalinux8:
     supported: true
     ci: false
@@ -58,8 +64,21 @@ platforms:
     supported: true
     ci: false
 
+# Dependencies 
+dependencies:
+  roles: 
+    - deitkrachten.awx_cli
+  collections:
+    - awx.awx
+
 # Molecule
 molecule:
+  requirements:
+    roles_extra:
+      - deitkrachten.awx_cli
+  prepare:
+    vars:
+      activate_epel: true
   converge:
     vars:
       awx_credentials_identifier: awx-1

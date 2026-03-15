@@ -1,18 +1,18 @@
 ---
 
-awx_container: "awx_credentials-oraclelinux8-node1"
+awx_container: "awx_credentials-olam8-node1"
 awx_credentials_identifier: awx-1
 awx_credentials_dest_root: "/tmp/xxx"
-awx_credentials_awxkit: 15.0.1
+awx_credentials_awxkit: 24.6.1
 
 awx_credentials:
   api:
-    url: https://{{ hostvars[awx_container]['ansible_default_ipv4']['address'] }}
+    url: https://127.0.0.1
     user: admin
-    password: admin
+    password: "Admin123!"
     validate_certs: False
   db:
-    host: "{{ hostvars[awx_container]['ansible_default_ipv4']['address'] }}"
+    host: 127.0.0.1
     port: '5432'
     name: awx
     user: awx

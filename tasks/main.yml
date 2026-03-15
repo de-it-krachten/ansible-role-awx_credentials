@@ -15,6 +15,10 @@
   ansible.builtin.debug:
     var: awx_credentials_dest
 
+- name: Setup requirements
+  ansible.builtin.include_tasks:
+    file: requirements.yml
+
 - name: Setup temporary docker container
   ansible.builtin.include_tasks:
     file: docker.yml
