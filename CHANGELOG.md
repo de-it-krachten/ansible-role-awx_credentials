@@ -1,3 +1,13 @@
+# [1.10.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.9.0...v1.10.0) (2026-08-04)
+
+
+### Features
+
+* Add support for ansible-core 2.20+ ([7ec571d](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/7ec571d7773b4235149fb4357cd01766b695e12b))
+* Added support for Fedora 44 ([1edb438](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/1edb438adc49b08567c13c698b22351ac0fe633e))
+* Added support for Ubuntu 26.04 LTS ([c437fea](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/c437fea590d12b01aef0f96895458674c8b7123a))
+* Drop support for Fedora 42 ([9e4002d](https://github.com/de-it-krachten/ansible-role-awx_credentials/commit/9e4002dc5690dcec0dac80c0a74dfeff23d2f95c))
+
 # [1.9.0](https://github.com/de-it-krachten/ansible-role-awx_credentials/compare/v1.8.0...v1.9.0) (2026-03-15)
 
 
